@@ -1,0 +1,37 @@
+﻿
+
+<div class="row">
+    <h2>Chat Group</h2>
+    <hr /> 
+    <input type="hidden" id="displayname" />
+    <ul id="discussion"></ul>
+    <br />
+    <label>Message:</label><br />
+    <textarea class="form-control" id="message" placeholder="Write your message here..."  ></textarea>
+    <input type="button" class="btn btn-primary" id="sendmessage" value="Send" />
+</div>
+ 
+
+@section scripts { 
+    <script>
+        $(function () {
+            var user = "@ViewBag.name";
+            var chat = $.connection.chatHub;
+            chat.client.addNewMessageToPage = function (name, message) {
+                $('#discussion').append('<li>' + htmlEncode(name) + ': ' 
+                    + '<strong style="color:black;">' + htmlEncode(message) + '</strong>' + '</li>');
+            };
+            $('#message').focus();
+            $.connection.hub.start().done(function () {
+                $('#sendmessage').click(function () {
+                    chat.server.send(user, $('#message').val());
+                    $('#message').val('').focus();
+                });
+            });
+        });
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}   

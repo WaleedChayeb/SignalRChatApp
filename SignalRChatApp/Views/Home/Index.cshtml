@@ -1,0 +1,11 @@
+﻿
+
+
+@using (Html.BeginForm("Chat", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" class="form-control" name="name" placeholder="Ex: Waleed" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Join</button>
+}
